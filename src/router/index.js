@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/RegisterView.vue')
+    },
+    {
       path: '/books',
       name: 'books',
       component: () => import('../views/BooksView.vue')
@@ -40,16 +45,22 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+/* 🔥 VERSION MODERNE (sans next) */
+router.beforeEach((to) => {
   const authStore = useAuthStore()
 
+  // 🔐 Si route protégée et pas connecté
   if (to.meta.requiresAuth && !authStore.isLoggedIn()) {
-    next('/login')
-  } else if (to.meta.requiresAdmin && !authStore.isAdmin()) {
-    next('/')
-  } else {
-    next()
+    return '/login'
   }
+
+  // 👑 Si route admin et pas admin
+  if (to.meta.requiresAdmin && !authStore.isAdmin()) {
+    return '/'
+  }
+
+  // ✅ sinon autorisé
+  return true
 })
 
 export default router
