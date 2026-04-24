@@ -1,47 +1,122 @@
 <template>
   <div class="home">
-    <!-- Hero Section -->
+
+    <!-- HERO -->
     <div class="hero">
       <h1>Découvrez des livres pour tous les goûts</h1>
-      <p>Des classiques intemporels aux derniers best-sellers, trouvez votre prochaine lecture ici.</p>
-      <RouterLink to="/books" class="btn-hero">Explorer le catalogue</RouterLink>
+      <p>
+        Des classiques intemporels aux derniers best-sellers,
+        trouvez votre prochaine lecture ici.
+      </p>
+      <RouterLink to="/books" class="btn-hero">
+        Explorer le catalogue
+      </RouterLink>
     </div>
 
-    <!-- Livres populaires -->
+    <!-- LIVRES RÉCENTS -->
     <div class="popular">
-      <h2>Livres populaires</h2>
-      <div class="books-grid" v-if="booksStore.books.length">
-        <div class="book-card" v-for="book in booksStore.books.slice(0, 3)" :key="book.id">
+      <h2>📚 Livres récents</h2>
+
+      <div class="books-grid" v-if="recentBooks.length">
+        <div class="book-card" v-for="book in recentBooks" :key="book.id">
+
           <img :src="book.image" :alt="book.title" @error="onImgError" />
+
           <h3>{{ book.title }}</h3>
-          <p>{{ book.year }}</p>
-          <RouterLink to="/books" class="btn-voir">Voir plus</RouterLink>
+
+          <p class="year">📅 {{ book.year }}</p>
+
+          <!-- 🔥 BOUTON INTELLIGENT -->
+          <button class="btn-voir" @click="goToBook(book.id)">
+            Voir plus
+          </button>
+
         </div>
       </div>
+
       <p v-else class="loading">Chargement des livres...</p>
     </div>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <div class="footer">
-      <h3>Besoin d'aide ?</h3>
-      <p>Contactez-nous pour toute question ou assistance.</p>
-      <a href="mailto:contact@bookshop.com" class="btn-contact">Contactez-nous</a>
+      <div class="footer-container">
+
+        <div class="footer-section">
+          <h2>📚 BookShop</h2>
+          <p>
+            Votre librairie en ligne pour découvrir les meilleurs livres,
+            des classiques aux nouveautés.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Navigation</h3>
+          <ul>
+            <li><RouterLink to="/">Accueil</RouterLink></li>
+            <li><RouterLink to="/books">Livres</RouterLink></li>
+            <li><RouterLink to="/favourites">Favoris</RouterLink></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>📧 contact@bookshop.com</p>
+          <p>📞 +216 12 345 678</p>
+          <p>📍 Tunisie</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Suivez-nous</h3>
+          <div class="socials">
+            <a href="#">🌐 Facebook</a>
+            <a href="#">📸 Instagram</a>
+            <a href="#">🐦 Twitter</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 BookShop — Tous droits réservés</p>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useBooksStore } from '../stores/books'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
 const booksStore = useBooksStore()
+const router = useRouter()
+const authStore = useAuthStore()
 
 onMounted(async () => {
   await booksStore.getAllBooks()
 })
 
+/* 🔥 livres récents */
+const recentBooks = computed(() => {
+  return [...booksStore.books]
+      .sort((a, b) => b.year - a.year)
+      .slice(0, 3)
+})
+
+/* 🔥 IMAGE FALLBACK */
 const onImgError = (e) => {
   e.target.src = 'https://via.placeholder.com/150x200?text=No+Image'
+}
+
+/* 🔥 REDIRECTION INTELLIGENTE */
+const goToBook = (id) => {
+  if (!authStore.isLoggedIn()) {
+    router.push(`/login?redirect=/books/${id}`)
+  } else {
+    router.push(`/books/${id}`)
+  }
 }
 </script>
 
@@ -50,6 +125,7 @@ const onImgError = (e) => {
   font-family: 'Georgia', serif;
 }
 
+/* HERO */
 .hero {
   background: linear-gradient(135deg, #1a3a5c, #2e6da4);
   color: white;
@@ -70,29 +146,17 @@ const onImgError = (e) => {
 
 .btn-hero {
   background: white;
-  color: #1a3a5c;
-  padding: 12px 30px;
-  border-radius: 25px;
+  color: #2e6da4;
+  padding: 10px 20px;
+  border-radius: 20px;
   text-decoration: none;
   font-weight: bold;
-  transition: all 0.3s;
 }
 
-.btn-hero:hover {
-  background: #f0f0f0;
-  transform: scale(1.05);
-}
-
+/* BOOKS */
 .popular {
-  padding: 50px 40px;
-  background: #f5f5f5;
+  padding: 40px;
   text-align: center;
-}
-
-.popular h2 {
-  font-size: 1.8rem;
-  margin-bottom: 30px;
-  color: #1a3a5c;
 }
 
 .books-grid {
@@ -104,11 +168,11 @@ const onImgError = (e) => {
 
 .book-card {
   background: white;
-  border-radius: 10px;
   padding: 20px;
-  width: 200px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
+  border-radius: 12px;
+  width: 180px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.3s;
 }
 
 .book-card:hover {
@@ -117,71 +181,94 @@ const onImgError = (e) => {
 
 .book-card img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 .book-card h3 {
-  font-size: 1rem;
-  color: #1a3a5c;
-  margin-bottom: 5px;
+  margin: 10px 0;
 }
 
-.book-card p {
-  color: #666;
-  font-size: 0.85rem;
+.year {
+  color: #777;
+  font-size: 0.9rem;
   margin-bottom: 10px;
 }
 
 .btn-voir {
+  border: none;
   background: #2e6da4;
   color: white;
-  padding: 8px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: background 0.3s;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .btn-voir:hover {
   background: #1a3a5c;
 }
 
-.loading {
-  color: #666;
-  font-style: italic;
-}
-
+/* FOOTER */
 .footer {
   background: #1a3a5c;
   color: white;
-  text-align: center;
-  padding: 40px 20px;
+  padding: 40px 20px 20px;
 }
 
-.footer h3 {
-  font-size: 1.3rem;
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footer-section {
+  max-width: 250px;
+}
+
+.footer-section h2,
+.footer-section h3 {
   margin-bottom: 10px;
 }
 
-.footer p {
-  opacity: 0.8;
-  margin-bottom: 20px;
+.footer-section p {
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
-.btn-contact {
-  background: white;
-  color: #1a3a5c;
-  padding: 10px 25px;
-  border-radius: 5px;
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  margin-bottom: 6px;
+}
+
+.footer-section a {
+  color: white;
   text-decoration: none;
-  font-weight: bold;
-  transition: all 0.3s;
+  opacity: 0.9;
 }
 
-.btn-contact:hover {
-  background: #f0f0f0;
+.footer-section a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 15px;
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 </style>

@@ -8,6 +8,7 @@
         <p class="subtitle">Sign in to your BookStore account</p>
 
         <form @submit.prevent="handleLogin">
+
           <div class="field">
             <label>Email or Username</label>
             <input v-model="identifiant" required />
@@ -18,10 +19,12 @@
             <input v-model="password" type="password" required />
           </div>
 
-          <button type="submit">Login</button>
+          <button type="submit" :disabled="loading">
+            {{ loading ? 'Connexion...' : 'Login' }}
+          </button>
+
         </form>
 
-        <!-- 🔥 NEW -->
         <p class="switch">
           Don’t have an account ?
           <router-link to="/register">Create one</router-link>
@@ -34,25 +37,43 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const identifiant = ref('')
 const password = ref('')
 const error = ref(null)
+const loading = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 
+/* 🔥 SI DÉJÀ CONNECTÉ → REDIRECTION */
+onMounted(() => {
+  if (authStore.isLoggedIn()) {
+    router.push('/')
+  }
+})
+
+/* 🔥 LOGIN PRO */
 const handleLogin = async () => {
   error.value = null
+  loading.value = true
 
   try {
     await authStore.login(identifiant.value, password.value)
-    router.push('/')
+
+    // 🔥 REDIRECTION INTELLIGENTE (IMPORTANT)
+    const redirectPath = route.query.redirect || '/'
+
+    router.push(redirectPath)
+
   } catch (err) {
-    error.value = "Invalid credentials"
+    error.value = "Email ou mot de passe incorrect ❌"
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -158,7 +179,12 @@ button {
   margin-top: 10px;
 }
 
-button:hover {
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
