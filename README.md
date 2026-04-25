@@ -1,38 +1,123 @@
-# bookstorerihab-frontend
+# 📚 BookStore Rihab - Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Application web développée avec **Vue 3 + Vite** permettant la gestion d’une bibliothèque en ligne avec authentification, gestion des rôles et système de favoris.
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 🚀 Fonctionnalités principales
 
-## Recommended Browser Setup
+### 👤 Utilisateur
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+* Consulter tous les livres
+* Voir les détails d’un livre
+* Ajouter / retirer des livres en favoris
+* Filtrer les livres (titre, année)
+* Interface intuitive et responsive
 
-## Customize configuration
+### 👑 Administrateur
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+* Gestion complète des livres (CRUD)
 
-## Project Setup
+  * Ajouter un livre
+  * Modifier un livre
+  * Supprimer un livre
+* Gestion des auteurs
 
-```sh
+  * Ajouter des auteurs
+  * Consulter la liste des auteurs
+
+### 🔐 Authentification
+
+* Login / Register
+* Gestion des rôles (USER / ADMIN)
+* Protection des routes avec Vue Router
+
+---
+
+## 🧠 Technologies utilisées
+
+* ⚡ Vue 3 (Composition API)
+* ⚡ Vite
+* 📦 Pinia (gestion d’état)
+* 🌐 Axios (API REST)
+* 🧭 Vue Router
+* 🎨 CSS moderne (UI personnalisée)
+
+---
+
+## 🗂️ Structure du projet
+
+```
+src/
+│── components/       # Composants réutilisables
+│── views/            # Pages principales
+│── views/admin/      # Pages admin
+│── stores/           # Pinia stores (auth, books, favourites)
+│── services/         # Appels API
+│── router/           # Configuration des routes
+```
+
+---
+
+## ⚙️ Installation du projet
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+---
 
-```sh
+## ▶️ Lancer le projet
+
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+Accès : http://localhost:5173
 
-```sh
+---
+
+## 🏗️ Build production
+
+```bash
 npm run build
 ```
+
+---
+
+## 🔒 Sécurité & logique
+
+* Routes protégées avec guards
+* Accès admin sécurisé
+* Données utilisateur isolées (favoris par utilisateur)
+* Redirection automatique si non connecté
+
+---
+
+## ✨ Améliorations réalisées
+
+* UI moderne et responsive
+* Gestion des rôles dynamique
+* Système de favoris avec localStorage
+* Optimisation des composants Vue
+* Expérience utilisateur améliorée
+
+---
+
+## 📌 Remarques
+
+* Backend requis pour fonctionnement complet (API REST)
+* Projet réalisé dans le cadre d’un mini-projet Vue.js
+
+---
+
+## 👩‍💻 Auteur
+
+**Rihab Ben Maiz**
+
+---
+
+## 📎 Licence
+
+Projet académique – usage éducatif
+
