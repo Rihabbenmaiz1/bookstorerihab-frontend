@@ -32,7 +32,7 @@
           </p>
 
           <p class="desc">
-            {{ book.description || "Aucune description disponible pour ce livre." }}
+            {{ book.summary || "Aucune description disponible pour ce livre." }}
           </p>
 
           <!-- 🔥 ACTIONS -->
@@ -99,7 +99,7 @@ const book = ref(null)
 onMounted(async () => {
   try {
     const res = await api.get(`/books/search/${route.params.id}`)
-    book.value = res.data
+    book.value = Array.isArray(res.data) ? res.data[0] : res.data
 
     // ⚠️ IMPORTANT
     favStore.loadFavourites()

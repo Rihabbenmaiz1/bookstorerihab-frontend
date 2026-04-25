@@ -13,17 +13,17 @@
       <!-- 🔐 CONNECTÉ -->
       <template v-if="auth.isLoggedIn()">
 
-        <RouterLink to="/books">All Books</RouterLink>
+        <RouterLink to="/books">Tous Livres</RouterLink>
 
         <!-- ⭐ TOUJOURS visible -->
         <RouterLink to="/favourites">
-          Mes Favoris
+          Favoris
         </RouterLink>
 
         <!-- 👑 ADMIN -->
         <template v-if="auth.isAdmin()">
-          <RouterLink to="/admin/books">Admin Books</RouterLink>
-          <RouterLink to="/admin/authors">Admin Authors</RouterLink>
+          <RouterLink to="/admin/books">Admin Livres</RouterLink>
+          <RouterLink to="/admin/authors">Admin Auteurs</RouterLink>
         </template>
 
         <a href="#" class="logout-btn" @click.prevent="logout">
