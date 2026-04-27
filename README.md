@@ -1,4 +1,4 @@
-# 📚 BookStore Rihab - Frontend
+# 📚 BookStore  - Frontend
 
 Application web développée avec **Vue 3 + Vite** permettant la gestion d’une bibliothèque en ligne avec authentification, gestion des rôles et système de favoris.
 
@@ -114,6 +114,7 @@ npm run build
 ## 👩‍💻 Auteur
 
 **Rihab Ben Maiz**
+**Ahmed Maaoui**
 
 ---
 
