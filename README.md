@@ -113,7 +113,7 @@ npm run build
 
 ## 👩‍💻 Auteur
 
-**Rihab Ben Maiz**//
+**Rihab Ben Maiz**
 
 **Ahmed Maaoui**
 
